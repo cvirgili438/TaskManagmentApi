@@ -4,7 +4,7 @@ namespace TaskApplicationApi.Domain.ObjectValues.TaskEntity
 {
     public class StatusTask
     {
-        public string Value { get; protected set; }
+        public string Value { get; }
         protected StatusTask()
         {
 
@@ -16,6 +16,19 @@ namespace TaskApplicationApi.Domain.ObjectValues.TaskEntity
         public static StatusTask CreateFromEnum(TaskStatusEnum value) 
         {
           return new StatusTask(value);
+        }
+        public override bool Equals(object obj)
+        {
+            if (obj is StatusTask other)
+                return Value == other.Value;
+
+            return false;
+        }
+
+        // Sobrescribe GetHashCode para que coincida con la implementación de Equals
+        public override int GetHashCode()
+        {
+            return Value.GetHashCode();
         }
 
     }

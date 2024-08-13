@@ -1,45 +1,25 @@
-﻿
-using TaskApplicationApi.Domain.ObjectValues.TaskEntity;
+﻿using TaskApplicationApi.Domain.ObjectValues.TaskEntity;
 
 namespace TaskApplicationApi.Domain.Entities
 {
     public class TaskEntity
     {
         public Guid Id { get; init; }
-        public string Description { get; init; }
+        public TaskDescription Description { get; init; }
         public StatusTask Status { get; init; }
+        public TaskCreationDate CreationDate { get; init; }
+        public TaskDueDate DueDate { get; init; }
+        public TaskPriority Priority { get; init; }
         public string Owner { get; init; }
-        public DateTime CreationDate { get; init; }
-        public DateTime DueDate { get; init; }
-        public int Priority { get; init; }
-        public string Tags { get; init; }
-        public TaskEntity(string description,
+        public virtual ICollection<TaskTags> Tags { get; set; }=new HashSet<TaskTags>();
+        public TaskEntity(TaskDescription description,
             StatusTask status,
             string owner,
-            DateTime creationDate,
-            DateTime dueDate,
-            int priority,
-            string tags)
-        {
-            if (string.IsNullOrEmpty(description))
-            {
-                throw new ArgumentException($"'{nameof(description)}' no puede ser nulo ni estar vacío.", nameof(description));
-            }
-
-            if (status is null)
-            {
-                throw new ArgumentNullException(nameof(status));
-            }
-
-            if (string.IsNullOrEmpty(owner))
-            {
-                throw new ArgumentException($"'{nameof(owner)}' no puede ser nulo ni estar vacío.", nameof(owner));
-            }
-
-            if (string.IsNullOrEmpty(tags))
-            {
-                throw new ArgumentException($"'{nameof(tags)}' no puede ser nulo ni estar vacío.", nameof(tags));
-            }
+            TaskCreationDate creationDate,
+            TaskDueDate dueDate,
+            TaskPriority priority
+            )
+        {            
             Id = Guid.NewGuid();
             Description=description;
             Status=status;
@@ -47,7 +27,6 @@ namespace TaskApplicationApi.Domain.Entities
             CreationDate=creationDate;
             DueDate=dueDate;
             Priority=priority;
-            Tags=tags;
         }
 
 

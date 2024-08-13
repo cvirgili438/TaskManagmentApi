@@ -6,28 +6,28 @@ using System.Threading.Tasks;
 
 namespace TaskApplicationApi.Domain.ObjectValues.TaskEntity
 {
-    public class TaskCreationDate
+    public class TaskDescription
     {
-        public DateTime Value { get; }
-        protected TaskCreationDate()
+        public string Value { get; }
+        protected TaskDescription()
         {
             
         }
-        internal TaskCreationDate(DateTime value) 
+        internal TaskDescription(string value) 
         {
+            if (string.IsNullOrEmpty(value))
+            {
+                throw new ArgumentException($"'{nameof(value)}' no puede ser nulo ni estar vacío.", nameof(value));
+            }
             this.Value = value;
         }
-        public static TaskCreationDate CreateFromDateTime(DateTime date) 
+        public static TaskDescription CreateFromString(string value) 
         {
-            if (date < DateTime.Now) 
-            {
-                throw new Exception("DateTime is old");
-            }
-            else return new TaskCreationDate(date);
+            return new TaskDescription(value);
         }
         public override bool Equals(object obj)
         {
-            if (obj is TaskCreationDate other)
+            if (obj is TaskDescription other)
                 return Value == other.Value;
 
             return false;

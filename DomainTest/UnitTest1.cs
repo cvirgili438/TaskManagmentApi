@@ -8,7 +8,7 @@ namespace DomainTest
     public class UnitTest1
     {
         private string Description;
-        private StatusTask Status;
+        private TaskApplicationApi.Domain.ObjectValues.TaskEntity.StatusTask Status;
         private string Owner ;
         private DateTime CreationDate ;
         private DateTime DueDate ;
@@ -16,8 +16,8 @@ namespace DomainTest
         private string Tags ;
         public UnitTest1()
         {
-            Description = "Description";
-            Status= StatusTask.CreateFromEnum(TaskStatusEnum.Fulfilled);
+            Description = "TaskDescription";
+            Status= TaskApplicationApi.Domain.ObjectValues.TaskEntity.StatusTask.CreateFromEnum(TaskStatusEnum.Fulfilled);
             Owner="Owner";
             CreationDate = DateTime.Now.AddDays(1);
             DueDate = DateTime.Now.AddDays(3);

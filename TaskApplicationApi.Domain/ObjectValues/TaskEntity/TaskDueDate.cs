@@ -6,28 +6,26 @@ using System.Threading.Tasks;
 
 namespace TaskApplicationApi.Domain.ObjectValues.TaskEntity
 {
-    public class TaskCreationDate
+    public class TaskDueDate
     {
         public DateTime Value { get; }
-        protected TaskCreationDate()
+        protected TaskDueDate() { }
+        internal TaskDueDate(DateTime dueDate) 
         {
-            
+            this.Value=dueDate;
         }
-        internal TaskCreationDate(DateTime value) 
+        public static TaskDueDate CreateFromDateTime(DateTime dueDate) 
         {
-            this.Value = value;
-        }
-        public static TaskCreationDate CreateFromDateTime(DateTime date) 
-        {
-            if (date < DateTime.Now) 
+            if (dueDate<DateTime.Now) 
             {
-                throw new Exception("DateTime is old");
+                throw new Exception("DueDate is lower than current time");
             }
-            else return new TaskCreationDate(date);
+            else return new TaskDueDate(dueDate);
+
         }
         public override bool Equals(object obj)
         {
-            if (obj is TaskCreationDate other)
+            if (obj is TaskDueDate other)
                 return Value == other.Value;
 
             return false;
@@ -38,5 +36,6 @@ namespace TaskApplicationApi.Domain.ObjectValues.TaskEntity
         {
             return Value.GetHashCode();
         }
+
     }
 }
