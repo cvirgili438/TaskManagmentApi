@@ -31,7 +31,6 @@ namespace TaskApplicationApi.Domain.ObjectValues.TaskEntity
             return false;
         }
 
-        // Sobrescribe GetHashCode para que coincida con la implementación de Equals
         public override int GetHashCode()
         {
             return Value.GetHashCode();
