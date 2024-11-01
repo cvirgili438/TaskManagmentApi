@@ -8,6 +8,10 @@ namespace TaskApplicationApi.Domain.Entities
 {
     public class TaskTags
     {
+        protected TaskTags()
+        {
+                
+        }
         public Guid Id { get; init; }
         public string Name { get; init; } = null!;
         public virtual ICollection<TaskEntity> Tasks { get; set; } = new HashSet<TaskEntity>();

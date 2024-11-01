@@ -23,6 +23,10 @@ namespace TaskApplicationApi.Domain.ObjectValues.TaskEntity
         }
         public static TaskDescription CreateFromString(string value) 
         {
+            if (value.Length> 255) 
+            {
+                throw new ArgumentException($"{nameof(value)} no puede tener mas de 255 carácteres",nameof(value));
+            }
             return new TaskDescription(value);
         }
         public override bool Equals(object obj)

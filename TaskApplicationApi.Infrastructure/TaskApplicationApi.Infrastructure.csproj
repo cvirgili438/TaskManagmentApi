@@ -30,6 +30,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\TaskApplicationApi.Application\TaskApplicationApi.Application.csproj" />
+    <ProjectReference Include="..\TaskApplicationApi.Domain\TaskApplicationApi.Domain.csproj" />
   </ItemGroup>
 
 </Project>
