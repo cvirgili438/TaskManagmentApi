@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -40,6 +41,12 @@ namespace TaskApplicationApi.Infrastructure.Persistance
             });
             builder.Entity<TaskEntity>().HasOne<UserEntity>().WithMany(e=>e.Tasks).HasForeignKey(e=>e.UserId);
             builder.Entity<TaskEntity>().HasMany(e => e.Tags).WithMany(e=>e.Tasks);
+            builder.Entity<RefreshTokenModel>(e =>
+            {
+                e.HasKey(e => e.Id);
+                e.HasIndex(x => x.TokenHash).IsUnique();
+                e.HasOne<UserEntity>().WithMany().HasForeignKey(e => e.UserId);
+            });
             base.OnModelCreating(builder);
         }
         public DbSet<TaskEntity> Task { get; set; }
