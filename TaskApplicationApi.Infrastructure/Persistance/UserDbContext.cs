@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using TaskApplicationApi.Domain.Entities;
 using TaskApplicationApi.Infrastructure.Models;
+using TaskApplicationApi.Infrastructure.Security.Model;
 
 namespace TaskApplicationApi.Infrastructure.Persistance
 {
@@ -43,5 +44,6 @@ namespace TaskApplicationApi.Infrastructure.Persistance
         }
         public DbSet<TaskEntity> Task { get; set; }
         public DbSet<TaskTags> TaskTags { get; set; }
+        public DbSet<RefreshTokenModel> RefreshTokens { get; set; }
     }
 }
