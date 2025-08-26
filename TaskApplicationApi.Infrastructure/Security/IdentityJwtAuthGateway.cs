@@ -51,7 +51,6 @@ namespace TaskApplicationApi.Infrastructure.Security
                 {
                     return Result.Fail(createRefreshToken.Errors);
                 }
-                await _unitOfWork.SaveChangeAsync();
                 var toReturn = new AuthResponse(token, refreshToken);
                 await _unitOfWork.CommitAsync();
                 return Result.Ok(toReturn);
@@ -73,15 +72,23 @@ namespace TaskApplicationApi.Infrastructure.Security
                 if (isValid.IsFailed) return Result.Fail(isValid.Errors);
                 //get userId from token
                 var userId = _jwtProvider.DecodeAndGetUserId(request.oldToken);
-                //generate new refreshToken 
-                var newRefreshToken = _jwtProvider.GenerateRefreshToken();
-                var newExpiredAt = DateTime.UtcNow.AddDays(_jwtOptions.Value.RefreshTokenDays);
                 //searching user
                 var user = await _userManager.FindByIdAsync(userId);
                 if (user is null)
                 {
                     return Result.Fail("Internal Error, User Error.");
                 }
+                //check if is used 
+                var olRefreshTokenIsUsedOrNot = await _unitOfWork.RefreshTokenStore.CheckIfAlreadyUse(userId,request.refreshToken);
+                if (olRefreshTokenIsUsedOrNot.IsFailed) 
+                {
+                    var resultRevoke = await _unitOfWork.RefreshTokenStore.RevokeAllSesions(userId);
+                    return Result.Fail("The RefrehsToken already used or revoked, all session are restore");
+                }
+                //generate new refreshToken 
+                var newRefreshToken = _jwtProvider.GenerateRefreshToken();
+                var newExpiredAt = DateTime.UtcNow.AddDays(_jwtOptions.Value.RefreshTokenDays);
+               
                 //get roles 
                 var roles = await _userManager.GetRolesAsync(user);
                 var token = _jwtProvider.GenerateToken(userId, roles.ToList());

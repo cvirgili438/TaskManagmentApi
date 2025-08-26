@@ -7,6 +7,9 @@ using Microsoft.EntityFrameworkCore;
 using TaskApplicationApi.Infrastructure.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
+using TaskApplicationApi.Application.Contracts;
+using TaskApplicationApi.Infrastructure.Repositories;
+using TaskApplicationApi.Infrastructure.Security;
 
 namespace TaskApplicationApi.Infrastructure
 {
@@ -47,6 +50,10 @@ namespace TaskApplicationApi.Infrastructure
                       ClockSkew = TimeSpan.FromSeconds(30)
                   };
               });
+            services.AddScoped<IRefreshTokenStore,RefreshTokenStore>();
+            services.AddScoped<IAuthGateway,IdentityJwtAuthGateway>();
+            services.AddScoped<IJwtProvider,JwtProvider>();
+            services.AddScoped<IUnitOfWork, UnitOfWork>();
             return services;
         }
     }

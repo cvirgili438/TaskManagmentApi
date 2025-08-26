@@ -14,5 +14,6 @@ namespace TaskApplicationApi.Application.Contracts
         Task<Result> RotateAsync(string oldPlain, string newPlain, DateTime newExp, CancellationToken ct = default);
         Task<Result> RevokeChainAsync(string userId, string reason, CancellationToken ct = default);
         Task<Result> RevokeAllSesions(string userId, CancellationToken ct = default);
+        Task<Result> CheckIfAlreadyUse(string userId, string refreshPlain);
     }
 }

@@ -5,6 +5,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TaskApplicationApi.Application.Interfases;
+using TaskApplicationApi.Application.Services;
 
 namespace TaskApplicationApi.Application
 {
@@ -13,6 +15,7 @@ namespace TaskApplicationApi.Application
         public static IServiceCollection AddApplicationServices(this IServiceCollection services,
                                                                 IConfiguration configuration)
         {
+            services.AddScoped<IAuthService,AuthService>();
             return services;
         }
     }

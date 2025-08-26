@@ -92,5 +92,26 @@ namespace TaskApplicationApi.Infrastructure.Repositories
                 return Result.Fail(ex.Message);
             }
         }
+
+        public async Task<Result> CheckIfAlreadyUse(string userId, string refreshPlain)
+        {
+            try
+            {
+                var hashRefresh = Hash(refreshPlain);
+                var searchByTokenHash = await _db.RefreshTokens.Where(e=>e.UserId == userId && e.TokenHash == hashRefresh ).SingleOrDefaultAsync();
+                bool checkIfRevoked = searchByTokenHash.RevokedAtUtc.HasValue 
+                    && searchByTokenHash.RevokedAtUtc.Value <= DateTime.UtcNow;
+                if (!string.IsNullOrEmpty(searchByTokenHash.ReplacedByHash) 
+                    || checkIfRevoked) 
+                {
+                    return Result.Fail("Already used");
+                }
+                return Result.Ok();
+            }
+            catch (Exception ex)
+            {
+                return Result.Fail(ex.Message);
+            }
+        }
     }
 }
